@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<div class="card">
+  <h1>📊 สรุปสถิติวันนี้</h1>
+  <div class="row"><span class="label">คิวทั้งหมดวันนี้</span><strong>{{ total_today }}</strong></div>
+  <div class="row"><span class="label">ให้บริการเสร็จแล้ว</span><strong>{{ done_today }}</strong></div>
+  <div class="row"><span class="label">ข้ามคิว (no-show)</span><strong>{{ skipped_today }}</strong></div>
+  <div class="row"><span class="label">กำลังรออยู่ตอนนี้</span><strong>{{ waiting_now }}</strong></div>
+  <div class="row"><span class="label">เวลารอเฉลี่ย (นาที)</span><strong>{{ avg_wait_minutes }}</strong></div>
+  <div class="row"><span class="label">ช่วงเวลาคนแน่นที่สุด</span><strong>{{ busiest_hour }}</strong></div>
+</div>
+
+<div class="card">
+  <h2>แยกตามประเภทบริการ (วันนี้)</h2>
+  <table>
+    <tr><th>ประเภท</th><th>จำนวนคิว</th></tr>
+    {% for pt in per_type %}
+    <tr>
+      <td>{{ pt.type_name }}</td>
+      <td>{{ pt.cnt }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+</div>
+
+<a href="{{ url_for('admin.admin') }}" class="btn btn-secondary">กลับหน้าเจ้าหน้าที่</a>
+{% endblock %}

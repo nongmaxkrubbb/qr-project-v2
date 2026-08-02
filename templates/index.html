@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}รับบัตรคิวโรงพยาบาล{% endblock %}
+{% block content %}
+<div class="card">
+  <h1>🏥 กดรับบัตรคิวโรงพยาบาล</h1>
+  <p class="label">เลือกประเภทบริการที่ต้องการ</p>
+  <form action="{{ url_for('user.get_ticket') }}" method="post">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    {% for qt in queue_types %}
+    <button class="btn" name="queue_type_id" value="{{ qt.id }}" type="submit">
+      {{ qt.name }}
+    </button>
+    {% endfor %}
+  </form>
+</div>
+{% endblock %}

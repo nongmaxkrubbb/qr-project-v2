@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}บัตรคิวของคุณ{% endblock %}
+{% block content %}
+<div class="card" style="text-align:center;">
+  <p class="label">หมายเลขคิวของคุณ</p>
+  <div class="queue-number">{{ queue_number }}</div>
+  <p class="label">สแกน QR Code นี้เพื่อติดตามสถานะคิวแบบ real-time</p>
+  <div class="qr-wrap">
+    <img src="data:image/png;base64,{{ qr_b64 }}" width="220" height="220" alt="QR Code สถานะคิว">
+  </div>
+  <a href="{{ url_for('user.status_page', ticket_id=ticket_id) }}" class="btn">ดูสถานะคิว (บนเครื่องนี้)</a>
+  <a href="{{ url_for('user.index') }}" class="btn btn-secondary">กลับหน้าแรก</a>
+</div>
+{% endblock %}

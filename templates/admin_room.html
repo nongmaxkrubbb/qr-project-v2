@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}จัดการคิว - {{ qtype.name }}{% endblock %}
+{% block content %}
+<div class="card" style="text-align:center;">
+  <h1>🚪 แผนก: {{ qtype.name }}</h1>
+  
+  <form action="{{ url_for('admin.call_next', queue_type_id=qtype.id) }}" method="post">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <button class="btn" style="font-size: 1.3rem; padding: 20px; margin-bottom: 20px;" type="submit">
+      📢 เรียกคิวถัดไป
+    </button>
+  </form>
+</div>
+
+<div class="card">
+  <h2>🔵 กำลังให้บริการ</h2>
+  {% if in_service %}
+  <table>
+    <tr><th>คิว</th><th>เวลาเรียก</th><th></th></tr>
+    {% for t in in_service %}
+    <tr>
+      <td style="font-size: 1.2rem; color: var(--primary);"><strong>{{ t.queue_number }}</strong></td>
+      <td>{{ iso(t.called_at)[11:16] }}</td>
+      <td style="text-align: right;">
+        <form action="{{ url_for('admin.complete_ticket', ticket_id=t.id) }}" method="post" style="display:inline;">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button class="btn btn-small" style="background: var(--success);" type="submit">เสร็จสิ้น</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+  {% else %}
+  <p class="label">ยังไม่มีคิวที่กำลังให้บริการ</p>
+  {% endif %}
+</div>
+
+<div class="card">
+  <h2>🟡 คิวที่รออยู่ ({{ waiting|length }})</h2>
+  {% if waiting %}
+  <table>
+    <tr><th>คิว</th><th>เวลารับบัตร</th><th></th></tr>
+    {% for t in waiting %}
+    <tr>
+      <td style="font-size: 1.1rem;"><strong>{{ t.queue_number }}</strong></td>
+      <td>{{ iso(t.created_at)[11:16] }}</td>
+      <td style="text-align: right;">
+        <form action="{{ url_for('admin.skip_ticket', ticket_id=t.id) }}" method="post" style="display:inline;">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button class="btn btn-small btn-danger" type="submit">ข้าม</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+  {% else %}
+  <p class="label">ไม่มีคิวที่รออยู่</p>
+  {% endif %}
+</div>
+
+<a href="{{ url_for('admin.admin') }}" class="btn btn-secondary">กลับหน้าเลือกแผนก</a>
+{% endblock %}

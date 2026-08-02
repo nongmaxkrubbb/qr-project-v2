@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}หน้าเจ้าหน้าที่ - เลือกแผนก{% endblock %}
+{% block content %}
+<div class="card">
+  <h1>🖥️ หน้าเจ้าหน้าที่ - เลือกแผนก</h1>
+  <p class="label">กรุณาเลือกแผนก/ห้องตรวจที่คุณประจำอยู่ เพื่อจัดการคิว</p>
+  
+  <div style="margin: 20px 0;">
+    {% for qt in queue_types %}
+    <a href="{{ url_for('admin.room', queue_type_id=qt.id) }}" class="btn" style="margin-bottom: 12px; display: block; text-decoration: none;">
+      เข้าสู่ห้อง: {{ qt.name }}
+    </a>
+    {% endfor %}
+  </div>
+
+  <hr style="border:none; border-top:1px solid #eee; margin:20px 0;">
+  
+  <div style="display: flex; justify-content: space-between;">
+    <a href="{{ url_for('admin.dashboard') }}" class="btn btn-small btn-secondary">📊 ดูสถิติ (Dashboard)</a>
+    <form action="{{ url_for('admin.admin_logout') }}" method="post" style="display:inline-block;">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <button class="btn btn-small btn-danger" type="submit">ออกจากระบบ</button>
+    </form>
+  </div>
+</div>
+<a href="{{ url_for('user.index') }}" class="btn btn-secondary">กลับหน้าแรก</a>
+{% endblock %}

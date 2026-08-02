@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}สถานะคิว{% endblock %}
+{% block content %}
+<div class="card" style="text-align:center;">
+  <p class="label">คิวของคุณ</p>
+  <div class="queue-number" id="queue_number">-</div>
+  <span class="status-badge" id="status_badge">กำลังโหลด...</span>
+
+  <div style="margin-top:20px; text-align:left;">
+    <div class="row"><span class="label">ประเภทบริการ</span><span id="queue_type">-</span></div>
+    <div class="row"><span class="label">ตอนนี้กำลังเรียกคิว</span><span id="now_calling">-</span></div>
+    <div class="row"><span class="label">รออยู่ข้างหน้า</span><span id="people_ahead">-</span> คิว</div>
+    <div class="row"><span class="label">เวลารอโดยประมาณ</span><span id="eta">-</span> นาที</div>
+  </div>
+
+  <p class="label" style="margin-top:16px;">หน้านี้จะอัปเดตอัตโนมัติทุก 5 วินาที</p>
+</div>
+
+<script>
+const ticketId = {{ ticket_id }};
+const badgeText = {
+  waiting: "รอเรียกคิว",
+  in_service: "กำลังให้บริการ",
+  done: "เสร็จสิ้น",
+  skipped: "ข้ามคิว"
+};
+
+async function refreshStatus() {
+  try {
+    const res = await fetch(`/api/status/${ticketId}`);
+    if (!res.ok) return;
+    const data = await res.json();
+
+    document.getElementById("queue_number").textContent = data.queue_number;
+    document.getElementById("queue_type").textContent = data.queue_type;
+    document.getElementById("now_calling").textContent = data.now_calling;
+    document.getElementById("people_ahead").textContent = data.people_ahead;
+    document.getElementById("eta").textContent = data.eta_minutes;
+
+    const badge = document.getElementById("status_badge");
+    badge.textContent = badgeText[data.status] || data.status;
+    badge.className = "status-badge status-" + data.status;
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+refreshStatus();
+setInterval(refreshStatus, 5000);
+</script>
+{% endblock %}

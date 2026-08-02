@@ -1,0 +1,27 @@
+# Environments
+.env
+.env.*
+!.env.example
+
+# Virtual Environment
+venv/
+env/
+.venv/
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Python packages
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Flask / Web
+instance/
+.webassets-cache
+
+# OS generated files
+.DS_Store
+Thumbs.db

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}ระบบคิวโรงพยาบาล{% endblock %}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #0ea5e9;
+    --primary-hover: #0284c7;
+    --secondary: #0f172a;
+    --bg-color: #f8fafc;
+    --card-bg: rgba(255, 255, 255, 0.95);
+    --text-main: #1e293b;
+    --text-muted: #64748b;
+    --danger: #ef4444;
+    --success: #10b981;
+    --warning: #f59e0b;
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: 'Kanit', sans-serif;
+    background: linear-gradient(135deg, #e0f2fe 0%, #f0fdf4 100%);
+    margin: 0;
+    padding: 0;
+    color: var(--text-main);
+    min-height: 100vh;
+  }
+  .container {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 30px 20px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .card {
+    background: var(--card-bg);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05), 0 8px 10px -6px rgba(0,0,0,0.01);
+    margin-bottom: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+  }
+  h1 { font-size: 1.6rem; margin-top: 0; color: var(--secondary); text-align: center; font-weight: 600;}
+  h2 { font-size: 1.2rem; font-weight: 500; color: var(--secondary);}
+  .btn {
+    display: block;
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(135deg, var(--primary) 0%, #38bdf8 100%);
+    color: white;
+    border: none;
+    border-radius: 14px;
+    font-size: 1.1rem;
+    font-weight: 500;
+    font-family: 'Kanit', sans-serif;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    margin-top: 12px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px -1px rgba(14, 165, 233, 0.2), 0 2px 4px -1px rgba(14, 165, 233, 0.1);
+  }
+  .btn:hover { 
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(14, 165, 233, 0.3), 0 4px 6px -2px rgba(14, 165, 233, 0.15);
+  }
+  .btn:active {
+    transform: translateY(0);
+  }
+  .btn-secondary { background: var(--secondary); box-shadow: 0 4px 6px -1px rgba(15, 23, 42, 0.2); }
+  .btn-secondary:hover { background: #1e293b; box-shadow: 0 10px 15px -3px rgba(15, 23, 42, 0.3); }
+  .btn-danger { background: var(--danger); box-shadow: 0 4px 6px -1px rgba(239, 68, 68, 0.2); }
+  .btn-small { padding: 8px 16px; font-size: 0.9rem; width: auto; display: inline-block; margin: 4px 4px 0 0; border-radius: 8px; }
+  .queue-number {
+    font-size: 4rem;
+    font-weight: 700;
+    text-align: center;
+    background: -webkit-linear-gradient(135deg, var(--primary), #38bdf8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin: 20px 0;
+    line-height: 1;
+  }
+  .label { color: var(--text-muted); font-size: 0.95rem; text-align: center; font-weight: 400;}
+  .row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px dashed #cbd5e1; font-size: 1.05rem;}
+  .row:last-child { border-bottom: none; }
+  .row span:first-child { color: var(--text-muted); }
+  .row span:last-child { font-weight: 500; color: var(--secondary); }
+  .status-badge {
+    display: inline-block;
+    padding: 6px 16px;
+    border-radius: 999px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+  .status-waiting { background: #fef3c7; color: #b45309; }
+  .status-in_service { background: #e0f2fe; color: #0369a1; }
+  .status-done { background: #d1fae5; color: #047857; }
+  .status-skipped { background: #fee2e2; color: #b91c1c; }
+  .qr-wrap { text-align: center; margin: 24px 0; }
+  .qr-wrap img { border: 4px solid white; border-radius: 16px; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1); width: 240px; height: 240px;}
+  table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+  td, th { text-align: left; padding: 12px 10px; border-bottom: 1px solid #e2e8f0; font-size: 1rem; }
+  th { color: var(--text-muted); font-weight: 500; }
+</style>
+</head>
+<body>
+<div class="container">
+{% block content %}{% endblock %}
+</div>
+</body>
+</html>
